@@ -1,0 +1,56 @@
+--The following SQL queries were used to answer simple business questions for a fictitious supermarket dataset. 
+
+--First i created a table so i can import the CSV. dataset. 
+
+CREATE TABLE supermarket(
+invoice_id VARCHAR(100), 
+branch VARCHAR(100),
+city VARCHAR(100),
+customer_type VARCHAR(100),
+gender VARCHAR(100),
+product_line VARCHAR(100),
+unit_price NUMERIC(10,4), 
+quantity INTEGER, 
+total NUMERIC(10,2),
+date TIMESTAMP,
+payment VARCHAR(100),
+rating NUMERIC(2,2))
+
+--Once imported, we can answer the following questions: 
+
+--What was the most expensive purchase? 
+SELECT *
+FROM supermarket
+ORDER BY total DESC
+LIMIT 1;
+
+--How many times was Ewallet used? 
+SELECT COUNT(*)
+FROM supermarket
+WHERE payment = 'Ewallet';
+
+--How many times was Cash used? 
+SELECT COUNT(*)
+FROM supermarket
+WHERE payment = 'Cash';
+
+--What was the total number of sales by branch? 
+SELECT branch, SUM(total)
+FROM supermarket
+GROUP BY branch;
+
+--What are the top 10 rated items? 
+SELECT * 
+FROM supermarket 
+ORDER BY rating DESC
+LIMIT 10;
+
+--How many females/male purchases was conducted? 
+SELECT COUNT (*)
+FROM supermarket 
+WHERE gender ILIKE 'fe%'
+
+--FOR MALES 
+SELECT COUNT (*)
+FROM supermarket 
+WHERE gender ILIKE 'MA%'
