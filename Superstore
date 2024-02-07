@@ -29,6 +29,10 @@ VALUES
 
 #For this project I used SQL queries to answer business questions: 
 
+#First, i wanted to view the entire dataset to gain familiarity:
+SELECT * 
+FROM superstore;
+
 #What is the rating of the Smart LED TV? 
 SELECT item_name, average_rating
 FROM superstore
@@ -48,3 +52,7 @@ ORDER BY SUM(price) ASC;
 SELECT stock_quantity, item_name
 FROM superstore
 WHERE item_name = 'Smart LED TV';
+
+#What is the average rating of all products? 
+SELECT AVG(average_rating)
+FROM superstore;
