@@ -1,4 +1,4 @@
-#This project utilizes the following fictitious fortune 500 company data: 
+# This project utilizes the following fictitious fortune 500 company data: 
 
 CREATE TABLE fortune_companies (
     company_id INTEGER PRIMARY KEY,
@@ -58,11 +58,37 @@ VALUES
     ('Company JJ', 'Manufacturing', 370.0, 3100, 1, 20, 12, 7.6),
     ('Company KK', 'Healthcare', 150.2, 3400, 0, 16, 8, 5.3);
 
-#Below i answered the following business questions using SQL queries: 
+# Below i answered the following business questions using SQL queries: 
 
-#First, i wanted to become familiar with the data: 
+# First, i wanted to become familiar with the data: 
 SELECT * 
 FROM fortune_companies; 
 
-# 
+# On average, what is the employee tenure for fortune 500 companies?
+SELECT ROUND(AVG(avg_employee_tenure),2)
+FROM fortune_companies;
 
+# What is the employee head count by industry? 
+SELECT industry, SUM(employees)
+FROM fortune_companies
+GROUP BY industry
+ORDER BY SUM(employees) DESC; 
+
+# What are the top 5 tech companies with the most employees? 
+SELECT company_name, employees, industry
+FROM fortune_companies
+WHERE industry LIKE 'Tech%'
+ORDER BY employees DESC
+LIMIT 5;
+
+# What company has the lowest/Highest employee tenure? 
+SELECT company_name, MIN(avg_employee_tenure)
+FROM fortune_companies;
+
+SELECT company_name, MAX(avg_employee_tenure)
+FROM fortune_companies;
+
+# Which companies provide healthcare benifits AND more than 10 days paid time off? 
+SELECT *
+FROM fortune_companies
+WHERE healthcare_benefits >=1 AND paid_time_off_days >10; 
