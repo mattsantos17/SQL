@@ -1,0 +1,41 @@
+# Using SQL Lite i answered the following business questions: 
+
+# How many orders were placed in January? 
+SELECT COUNT (DISTINCT orderid)
+FROM jansales;
+
+# How many of those orders were for an iPhone? 
+SELECT COUNT (product)
+FROM jansales
+WHERE product = 'iPhone'; 
+
+# Select the customer account numbers for all the orders that were placed in February.
+SELECT acctnum
+FROM febsales
+INNER JOIN customers
+ON febsales.orderID = customers.order_id; 
+
+# Which product was the cheapest one sold in January, and what was the price? 
+SELECT Product, price
+FROM jansales
+ORDER BY price ASC
+LIMIT 1; 
+
+# What is the total revenue for each product sold in January? 
+SELECT Product,ROUND(SUM(quantity),2) * price AS 'Total Revenue'
+FROM jansales
+GROUP BY product 
+ORDER BY SUM(quantity) * price ASC; 
+
+# Which products were sold in February at 548 Lincoln St, Seattle, WA 98101, how many of each were sold, and what was the total revenue?
+SELECT product, SUM(quantity)*price AS 'Total Revenue'
+FROM febsales
+WHERE location like '548 Lincoln St%'
+GROUP BY product; 
+
+# How many customers ordered more than 2 products at a time in February, and what was the average amount spent for those customers? 
+SELECT COUNT (DISTINCT acctnum), ROUND(AVG(quantity * price),2) AS 'Avg Amount Spent'
+FROM febsales
+LEFT JOIN customers
+ON febsales.orderID = customers.order_id
+WHERE quantity > 2 AND length(orderid) = 6 AND orderid <> 'Order ID';
