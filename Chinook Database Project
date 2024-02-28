@@ -1,0 +1,84 @@
+# Using SQLITE queries and a public dataset, i answered the following questions: 
+
+# Show Customers (their full names, customer ID, and country) who are not in the US. 
+SELECT customerid, firstname ||' ' || lastname, country 
+FROM customers
+WHERE country <> 'USA'
+ORDER BY country ASC; 
+
+# Show only the customers from Brazil. 
+SELECT * 
+FROM customers
+WHERE country = 'Brazil'; 
+
+# Find the Invoices of customers who are from Brazil. The resulting table should show the customer's full name, Invoice ID, Date of the invoice, and billing country.
+SELECT firstname, lastname, invoiceid, invoicedate, billingcountry
+FROM customers
+FULL OUTER JOIN invoices 
+ON customers.customerid = invoices.customerid 
+WHERE country = 'Brazil'; 
+
+# Show the Employees who are Sales Agents.
+SELECT * 
+FROM employees 
+WHERE title LIKE 'Sales Support A%'; 
+
+# Find a unique/distinct list of billing countries from the Invoice table.
+SELECT DISTINCT(billingcountry) 
+FROM invoices; 
+
+# How many Invoices were there in 2009?
+SELECT COUNT(*)
+FROM invoices
+WHERE invoicedate LIKE '2009%';
+
+# What are the total sales for 2009?
+SELECT ROUND(SUM(total),2)
+FROM invoices
+WHERE invoicedate LIKE '2009%'; 
+
+# Write a query that includes the purchased track name with each invoice line ID.
+SELECT invoiceid, name 
+FROM tracks
+FULL OUTER JOIN invoice_items
+ON tracks.TrackId = invoice_items.TrackId
+WHERE invoiceid NOT NULL; 
+
+# Write a query that includes the purchased track name AND artist name with each invoice line ID in order ASC. 
+SELECT invoiceid, name, composer
+FROM tracks
+FULL OUTER JOIN invoice_items
+ON tracks.TrackId = invoice_items.TrackId
+WHERE invoice_items.InvoiceId NOT NULL
+ORDER BY invoiceid ASC; 
+
+# Provide a query that shows all the Tracks, and include the Album name, Media type, and Genre.
+SELECT tracks.Name, albums.Title, genres.Name
+FROM tracks
+FULL OUTER JOIN albums
+ON tracks.AlbumId = albums.AlbumId
+FULL OUTER JOIN genres 
+ON tracks.GenreId = genres.GenreId;
+
+# Show the total sales made by each sales agent.
+SELECT employees.Title, employees.EmployeeId, ROUND(SUM(invoices.Total),2) AS TOTAL_SALES
+FROM customers
+FULL OUTER JOIN employees
+ON customers.SupportRepId = employees.EmployeeId
+FULL OUTER JOIN invoices 
+ON customers.customerid = invoices.CustomerId
+GROUP BY employees.EmployeeId
+HAVING SUM(invoices.Total)> 0
+ORDER BY TOTAL_SALES ASC; 
+
+# Which sales agent made the most dollars in sales in 2009? 
+SELECT employees.Title, employees.EmployeeId, ROUND(SUM(invoices.Total),2) AS SALES 
+FROM customers
+FULL OUTER JOIN employees
+ON customers.SupportRepId = employees.EmployeeId
+FULL OUTER JOIN invoices 
+ON customers.customerid = invoices.CustomerId
+WHERE invoicedate LIKE '2009%'
+GROUP BY employees.EmployeeId
+ORDER BY sales DESC
+LIMIT 1; 
