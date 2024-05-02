@@ -26,3 +26,44 @@ WHERE title = 'Outlaw Hanky';
 SELECT phone
 FROM address
 WHERE address ILIKE '259 Ip%';
+
+# What are the customer ID's of the first 10 paying customers?:
+SELECT customer_id
+FROM payment
+ORDER BY payment_date ASC
+LIMIT 10;
+
+# What are the titles of the five shortest movies in runtime?: 
+SELECT title, length
+FROM film 
+ORDER BY length ASC
+LIMIT 5; 
+
+# How many movies are 50 mins or less?: 
+SELECT COUNT (title)
+FROM film 
+WHERE length <= 50; 
+
+# How many payments where greater than $5?:
+SELECT COUNT (payment_id)
+FROM payment
+WHERE amount > 5; 
+
+# How many actors have a name that starts with P?: 
+SELECT COUNT (first_name)
+FROM actor
+WHERE first_name ILIKE 'P%'; 
+
+# How many unique districts are our customers from?: 
+SELECT COUNT (DISTINCT district)
+FROM address; 
+
+# How many films have a rating of R and a replacement cost of 5 and 15 dollars?: 
+SELECT COUNT (*) 
+FROM film 
+WHERE rating = 'R' AND replacement_cost BETWEEN 5 AND 15;
+
+# How many films have the name "truman" in the title?:
+SELECT COUNT(*) 
+FROM film 
+WHERE title ILIKE '%Truman%';
