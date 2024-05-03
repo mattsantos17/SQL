@@ -1,4 +1,4 @@
-# Using a DVD Rental Dataset, i used SQL queries to answer the following the questions: 
+# Using a DVD Rental Dataset, i used the following SQL queries to answer business questions: 
 
 # Select everything from the actor table: 
 SELECT * 
@@ -67,5 +67,31 @@ WHERE rating = 'R' AND replacement_cost BETWEEN 5 AND 15;
 SELECT COUNT(*) 
 FROM film 
 WHERE title ILIKE '%Truman%';
+
+# Select the Most and least expensive replacement cost:
+SELECT MAX (replacement_cost) AS MXX, MIN(replacement_cost) AS MIN
+FROM film;
+
+# What is the average replacement cost?:
+SELECT ROUND(AVG(replacement_cost),2)
+FROM film; 
+
+# What is the average replacement cost per rating?:
+SELECT ROUND(AVG(replacement_cost),2) AS AVG_COST, rating 
+FROM film
+GROUP BY rating; 
+
+# What ratings have an average replacement cost greater than 20? 
+SELECT ROUND(AVG(replacement_cost),2) AS AVG_COST, rating 
+FROM film
+GROUP BY rating 
+HAVING AVG(replacement_cost) > 20; 
+
+# What are the emails of the customers who live in California?: 
+SELECT first_name, last_name, email, district
+FROM customer
+INNER JOIN address
+ON customer.address_id = address.address_id
+WHERE district = 'California'; 
 
 # 
