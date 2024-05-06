@@ -94,4 +94,11 @@ INNER JOIN address
 ON customer.address_id = address.address_id
 WHERE district = 'California'; 
 
-# 
+# What months did all the payments occur? 
+SELECT DISTINCT(EXTRACT (MONTH FROM payment_date))
+FROM payment; 
+
+# How many payments occured on a Monday? 
+SELECT COUNT(EXTRACT (DOW FROM payment_date)) as dow 
+FROM payment
+WHERE EXTRACT (DOW FROM payment_date) = 1; 
