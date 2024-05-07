@@ -1,0 +1,61 @@
+# Using SQL i answered the following questions using a health club data set: 
+
+# How can you retrieve all the information from the cd.facilities table?
+SELECT * 
+FROM cd.facilities; 
+
+# You want to print out a list of all of the facilities and their cost to members. How would you retrieve a list of only facility names and costs?
+SELECT name, membercost
+FROM cd.facilities; 
+
+# How can you produce a list of facilities that charge a fee to members?
+SELECT *
+FROM cd.facilities
+WHERE membercost > 0; 
+
+# How can you produce a list of facilities that charge a fee to members, and that fee is less than 1/50th of the monthly maintenance cost? 
+SELECT *
+FROM cd.facilities
+WHERE membercost > 0 AND membercost < monthlymaintenance/50;
+
+# How can you produce a list of all facilities with the word 'Tennis' in their name?
+SELECT *
+FROM cd.facilities
+WHERE name ILIKE '%tennis%'; 
+
+# How can you retrieve the details of facilities with ID 1 and 5?
+SELECT *
+FROM cd.facilities
+WHERE facid IN (1,5); 
+
+# How can you produce an ordered list of the first 10 surnames in the members table? The list must not contain duplicates.
+SELECT  DISTINCT(surname)
+FROM cd.members
+ORDER BY surname ASC
+LIMIT 10; 
+
+# You'd like to get the signup date of your last member. How can you retrieve this information?
+SELECT * 
+FROM cd.members
+ORDER BY joindate DESC 
+LIMIT 1;
+
+# Produce a count of the number of facilities that have a cost to guests of 10 or more.
+SELECT COUNT(*) 
+FROM cd.facilities
+WHERE guestcost >= 10; 
+
+# Produce an output table consisting of facility id and slots, sorted by the number of slots.
+SELECT cd.bookings.facid, SUM(slots) AS slots
+FROM cd.bookings
+JOIN cd.facilities
+ON cd.bookings.facid = cd.facilities.facid
+GROUP BY cd.bookings.facid 
+ORDER BY SUM(slots) ASC; 
+
+# How can you produce a list of the start times for bookings by members named 'David Farrell'
+SELECT surname, firstname, starttime 
+FROM cd.members
+JOIN cd.bookings ON 
+cd.members.memid = cd.bookings.memid
+WHERE firstname = 'David' AND surname = 'Farrell'; 
